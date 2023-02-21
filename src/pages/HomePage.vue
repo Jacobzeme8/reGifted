@@ -1,9 +1,18 @@
 <template>
   <div class="container-fluid">
     <div class="row">
+      <div class="col-12 mb-3">
+        <form>
+          <label for="tag" class="form-label">tag</label>
+          <input type="text" id="tag-input" class="form-control">
+          <label for="url" class="form-label">url</label>
+          <input type="text" id="url-input" class="form-control">
+        </form>
+      </div>
+    </div>
+    <div class="row">
       <div v-for="gift in gifts" class="col-4 d-flex justify-content-center flex-column">
-          <img @click="openGift(gift.id)" :src="gift.url" alt="" class=" selectable img-fluid gift">
-          <h5 class="text-center">{{ gift.tag }}</h5>
+          <GiftPage :gift="gift"/>
       </div>
     </div>
   </div>
