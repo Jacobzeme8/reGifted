@@ -2,24 +2,25 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12 mb-3">
-        <form>
+        <form @submit.prevent="giveGift()">
           <label for="tag" class="form-label">tag</label>
-          <input type="text" id="tag-input" class="form-control">
+          <input v-model="editable.tag" required type="text" id="tag-input" class="form-control">
           <label for="url" class="form-label">url</label>
-          <input type="text" id="url-input" class="form-control">
+          <input v-model="editable.url" required type="text" id="url-input" class="form-control">
+          <button class="btn btn-success mt-2"> Give Gift!</button>
         </form>
       </div>
     </div>
     <div class="row">
       <div v-for="gift in gifts" class="col-4 d-flex justify-content-center flex-column">
-          <GiftPage :gift="gift"/>
+        <GiftPage :gift="gift"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { giftService } from "../services/GiftServices";
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
@@ -27,6 +28,10 @@ import {AppState} from "../AppState"
 
 export default {
   setup() {
+
+    const editable = ref({
+    
+    })
 
     async function getGifts(){
       try {
@@ -37,9 +42,14 @@ export default {
       }
     }
 
-    async function openGift(giftId){
+    
+
+    async function giveGift(){
       try {
-        await giftService.openGift(giftId)
+        let tag = editable.value.tag
+        let url = editable.value.url
+        // logger.log(tag)
+        await giftService.giveGift(tag, url)
       } catch (error) {
         logger.error(error)
         Pop.error(error)
@@ -53,9 +63,11 @@ export default {
 
     return {
 
+      editable,
+
       gifts: computed(()=> AppState.gifts),
 
-      openGift
+      giveGift
     }
   }
 }

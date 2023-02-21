@@ -6,6 +6,9 @@
 
 <script>
 import { Gift } from "../models/Gift";
+import { logger } from "../utils/Logger";
+import Pop from "../utils/Pop";
+import { giftService } from "../services/GiftServices";
 export default {
 
   props: {
@@ -13,7 +16,19 @@ export default {
   },
 
   setup(){
-    return {}
+
+    async function openGift(giftId){
+      try {
+        await giftService.openGift(giftId)
+      } catch (error) {
+        logger.error(error)
+        Pop.error(error)
+      }
+    }
+
+    return {
+      openGift
+    }
   }
 }
 </script>
