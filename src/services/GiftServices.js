@@ -23,6 +23,8 @@ class GiftService{
   async giveGift(tag, url){
     const res = await giftApi.post('api/gifts/', {tag: tag, url: url})
     logger.log(res.data)
+    const newGift = new Gift(res.data)
+    AppState.gifts.unshift(newGift)
   }
 
 }
